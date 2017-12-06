@@ -17,7 +17,7 @@ public class ThreadsLab {
     public static int ages[] = {20, 45, 47, 38, 35, 67, 18, 34};
     
             static class Processor implements Runnable{
-                private int id;
+                private final int id;
                 public Processor (int id){
                 this.id = id;
                 }
@@ -49,7 +49,7 @@ public class ThreadsLab {
             
             
     public static class MyThread {
-        private String task;
+        private final String task;
         MyThread (String typeOfTaks){
 		this.task = typeOfTaks;
         }
@@ -57,6 +57,7 @@ public class ThreadsLab {
         static Thread t1 = new Thread (new Runnable()
                 {
                 @Override
+                @SuppressWarnings("empty-statement")
                 public void run(){
                     synchronized(ages){
                         System.out.println("locked age array");
@@ -68,13 +69,14 @@ public class ThreadsLab {
                         System.out.println("It has been " + yrs + " years "
                         + "since you were abe to vote \n");
                         }
-                        try{t1.sleep(5000);}catch(InterruptedException ie){};
+                        try{Thread.sleep(5000);}catch(InterruptedException ie){};
                     }
                 });
 
         static Thread t2 = new Thread(new Runnable()
                     {
                     @Override
+                    @SuppressWarnings("empty-statement")
                     public void run(){
                         for (int i = 0; i < ages.length; i++) {
                             age = ages[i];
