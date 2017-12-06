@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  *
- * @author badi
+ * @author ken
  */
 public class ThreadsLab {
     public static int age, yrs;
@@ -26,17 +26,17 @@ public class ThreadsLab {
                 synchronized public void run() {  
                 System.out.println(Thread.currentThread().getName()+" starting.... " + id);
                 MyThread mt = new MyThread("");
-                mt.t1.start();try{
-                    mt.t1.join();
-                }catch (Exception e){
+                MyThread.t1.start();try{
+                    MyThread.t1.join();
+                }catch (InterruptedException e){
                     System.out.print(e.getMessage());
                 }
-                mt.t2.start();try{
-                    mt.t2.join();
-                }catch (Exception e){
+                MyThread.t2.start();try{
+                    MyThread.t2.join();
+                }catch (InterruptedException e){
                     System.out.print(e.getMessage());
                 }
-                mt.t3.start();
+                MyThread.t3.start();
                 try { Thread.sleep(5000);  
                     }catch (InterruptedException e) 
                         { 
@@ -54,7 +54,6 @@ public class ThreadsLab {
 		this.task = typeOfTaks;
         }
         
-        //
         static Thread t1 = new Thread (new Runnable()
                 {
                 @Override
@@ -81,13 +80,14 @@ public class ThreadsLab {
                             age = ages[i];
                             System.out.println("you are " + age + " years old \n");
                             }
-                        try{t2.sleep(5000);}catch(InterruptedException ie){};
+                        try{Thread.sleep(5000);}catch(InterruptedException ie){};
                         }
                     });
     
         static Thread t3 = new Thread(new Runnable()
                     {
                     @Override
+                    @SuppressWarnings("empty-statement")
                     public void run(){
                         for (int i = 0; i < ages.length; i++) {
                             age = ages[i];
@@ -95,7 +95,7 @@ public class ThreadsLab {
                             int voted = (yrs / 5) +1;
                             System.out.println("You have voted " + voted + " times\n");
                             }
-                        try{t3.sleep(5000);}catch(InterruptedException ie){};
+                        try{Thread.sleep(5000);}catch(InterruptedException ie){};
                         }
                     });
     }
@@ -104,12 +104,12 @@ public class ThreadsLab {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        MyThread mt = new MyThread("");
-        Thread ourThreads[] = {mt.t1,mt.t2,mt.t3};
+        
+        Thread ourThreads[] = {MyThread.t1,MyThread.t2,MyThread.t3};
 
         ExecutorService executor = Executors.newFixedThreadPool(2);
-        for (int i=0; i<ourThreads.length;i++){
-            executor.submit(ourThreads[i]);
+        for (Thread ourThread : ourThreads) {
+            executor.submit(ourThread);
         }
             executor.shutdown();
             System.out.println("All tasks submitted");
