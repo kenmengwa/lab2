@@ -10,7 +10,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  *
- * @author ken
+ * @author Mengwa
  */
 public class ThreadsLab {
     public static int age, yrs;
